@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formNew">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />          
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="item" icon="ui-icon-arrowreturn-1-w"/> 
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnPersist" value="保存" action="#{itemMasterManagedBean.persist('item')}" icon="ui-icon-disk"  update="plgNew"/>
+                </f:facet>
+            </p:toolbar>  
+            <p:panel id="panelNew" header="商品信息－新增">
+                <h:panelGrid id="plgNew" columns="3" columnClasses="Wid20,Wid50,Wid30" styleClass="Wid60 Responsive" >
+                    <p:outputLabel value="商品分类" for="category" />
+                    <p:selectOneMenu id="category" value="#{itemMasterManagedBean.newEntity.itemCategory}"  required="true"
+                                     converter="itemCategoryConverter" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItem itemLabel="Select One" itemValue="" />  
+                        <f:selectItems value="#{itemMasterManagedBean.itemCategoryList}" var="c" itemLabel="#{c.name}" itemValue="#{c}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value=""/>
+                    <p:outputLabel value="板材分类" for="type" />
+                    <p:selectOneMenu id="type" value="#{itemMasterManagedBean.newEntity.itemType}"  required="true"
+                                     converter="itemTypeConverter" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <p:ajax listener="#{itemMasterManagedBean.onItemTypeChangedNew}" update="property" />
+                        <f:selectItem itemLabel="Select One" itemValue="" />  
+                        <f:selectItems value="#{itemMasterManagedBean.itemTypeList}" var="t" itemLabel="#{t.name}" itemValue="#{t}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value=""/>
+                    <p:outputLabel value="选择材质" for="property" />
+                    <p:selectOneMenu id="property" value="#{itemMasterManagedBean.newEntity.itemProperty}"  required="true"
+                                     converter="itemPropertyConverter" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItem itemLabel="Select One" itemValue="" />  
+                        <f:selectItems value="#{itemMasterManagedBean.itemPropertyList}" var="p" itemLabel="#{p.name}" itemValue="#{p}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value=""/>
+                    <p:outputLabel value="选择风格" for="kind" />
+                    <p:selectOneMenu id="kind" value="#{itemMasterManagedBean.newEntity.itemKind}"
+                                     converter="itemKindConverter" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItem itemLabel="Select One" itemValue="" />  
+                        <f:selectItems value="#{itemMasterManagedBean.itemKindList}" var="k" itemLabel="#{k.name}" itemValue="#{k}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value=""/>
+                    <p:outputLabel value="商品编码" for="itemno" />
+                    <p:inputText id="itemno" value="#{itemMasterManagedBean.newEntity.itemno}" title="Itemno" />
+                    <h:outputText value=""/>
+                    <p:outputLabel value="商品名称" for="itemdesc" />
+                    <p:inputText id="itemdesc" value="#{itemMasterManagedBean.newEntity.itemdesc}" title="Itemdesc" required="true" requiredMessage="请输入商品名称"/>
+                    <p:message for="itemdesc"/>
+                    <p:outputLabel value="商品描述" for="itemspec" />
+                    <p:inputTextarea id="itemspec" value="#{itemMasterManagedBean.newEntity.itemspec}" title="Itemspec" maxlength="100" styleClass="Wid80" />
+                    <h:outputText value=""/>
+                    <p:outputLabel value="品牌" for="brand" />
+                    <p:inputText id="brand" value="#{itemMasterManagedBean.newEntity.brand}" title="Brand" />
+                    <h:outputText value=""/>
+                    <p:outputLabel value="型号" for="batch" />
+                    <p:inputText id="batch" value="#{itemMasterManagedBean.newEntity.batch}" title="Batch" />
+                    <h:outputText value=""/>
+                    <p:outputLabel value="序号" for="sn" />
+                    <p:inputText id="sn" value="#{itemMasterManagedBean.newEntity.sn}" title="Sn" /> 
+                    <h:outputText value=""/>
+                    <p:outputLabel value="单位" for="unit" />
+                    <p:inputText id="unit" value="#{itemMasterManagedBean.newEntity.unit}" title="Unit" required="true" requiredMessage="请输入单位."/>
+                    <p:message for="unit"/>
+                    <p:outputLabel value="价格" for="price" />
+                    <p:inputText id="price" value="#{itemMasterManagedBean.newEntity.price}" title="Price" required="true" requiredMessage="请输入单价."/>
+                    <p:message for="price"/>
+                    <p:outputLabel value="折扣" for="disc" />
+                    <p:inputText id="disc" value="#{itemMasterManagedBean.newEntity.disc}" title="Disc"  required="true" requiredMessage="请输入折扣."/>                
+                    <p:message for="disc"/>             
+                    <p:outputLabel value="优先顺序" for="idx" />                   
+                    <p:inputText id="idx" value="#{itemMasterManagedBean.newEntity.idx}" title="Idx" required="true" requiredMessage="请输入顺序."/>
+                    <p:message for="idx"/>
+                    <p:outputLabel value="新品热卖" for="hot" />                   
+                    <p:inputText id="hot" value="#{itemMasterManagedBean.newEntity.hot}" title="Hot" required="true" requiredMessage="请输入新品."/>
+                    <p:message for="hot"/>
+                    <p:outputLabel value="Logo1" for="logo1" />
+                    <p:inputText id="logo1" value="#{itemMasterManagedBean.newEntity.logo1}" title="Logo1" />
+                    <h:outputText value="小Logo宽72px高72px"/>
+                    <p:outputLabel value="Logo2" for="logo2" />
+                    <p:inputText id="logo2" value="#{itemMasterManagedBean.newEntity.logo2}" title="Logo2" />
+                    <h:outputText value="大Logo宽270px高180px"/>
+                    <f:facet name="footer">   
+
+                    </f:facet>      
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form id="formUpload">
+            <p:fileUpload id="fileUpload"  fileUploadListener="#{itemMasterManagedBean.handleFileUpload}" sizeLimit="5000000" styleClass="fileUpload"
+                          update=":formUpload"/>
+            <p:panelGrid id="plgUpload" columns="2" columnClasses="w120,w300">
+                <h:outputLabel value="文件名：" for="fileName" />
+                <h:outputText id="fileName"  value="#{itemMasterManagedBean.fileName}"/>
+            </p:panelGrid> 
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formEdit">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="itemkind" icon="ui-icon-arrowreturn-1-w"  />                          
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" action="#{itemKindManagedBean.save('itemkind')}" icon="ui-icon-disk"  />                                
+                </f:facet>
+            </p:toolbar>
+            <p:panel id="panelEdit" header="商品风格－修改">
+                <f:facet name="header">   
+
+                </f:facet> 
+                <h:panelGrid id="plgEdit"  columns="3" columnClasses="Wid20,Wid50,Wid30" styleClass="Wid60 Responsive" >     
+                    <p:outputLabel value="分类" for="category" />
+                    <p:inputText id="category" value="#{itemKindManagedBean.currentEntity.name}" title="分类" required="true" requiredMessage="请输入分类."/>
+                    <p:message for="category"/>
+                    <p:outputLabel value="服务名称" for="classname" />
+                    <p:inputText id="classname" value="#{itemKindManagedBean.currentEntity.classname}" title="服务名称" required="true" requiredMessage="请输入服务名称."/>
+                    <p:message for="classname"/>
+                    <f:facet name="footer">   
+
+                    </f:facet>  
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

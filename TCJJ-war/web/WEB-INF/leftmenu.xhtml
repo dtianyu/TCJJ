@@ -1,0 +1,32 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/sentinel"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <div id="layout-menubar" class="Unselectable fontRegular">
+        <div class="layout-menubarinner-box" id="buttonArea">
+            <a href="#" id="layout-menubar-resize" class="BordRad3" title="Menu Resize"><i class="icon-th-list-2"></i></a>
+            <a href="#" id="layout-menubar-resize2" class="BordRad3" title="Open Menu"><i class="icon-menu"></i></a>
+        </div>
+        <h:form id="form_leftmenu">
+            <ps:menu id="sm_leftmenu">
+                <p:menuitem id="sm_dashboard" value="首页" outcome="home" icon="icon-home-outline" containerStyleClass="layout-menubar-active"/>
+                <p:submenu id="sm_app" label="应用" icon="icon-th-thumb" expanded="true">
+                    <p:menuitem id="sm_app_category" value="家具分类" icon="icon-doc-text-1" outcome="itemcategory" />
+                    <p:menuitem id="sm_app_type" value="家具板材" icon="icon-doc-text-1" outcome="itemtype" />
+                    <p:menuitem id="sm_app_property" value="板材分类" icon="icon-doc-text-1" outcome="itemproperty" />
+                    <p:menuitem id="sm_app_kind" value="风格维护" icon="icon-doc-text-1" outcome="itemkind" />
+                    <p:menuitem id="sm_app_item" value="家具维护" icon="icon-doc-text-1" outcome="item" />
+                    <p:menuitem id="sm_sys_adv" value="首页广告" icon="icon-doc-add" outcome="systemadv" />
+                </p:submenu>
+                <p:submenu id="sm_user" label="账户" icon="icon-vcard">
+                    <p:menuitem id="sm_user_pwd" value="更改密码" icon="icon-doc-text" outcome="resetPwd"/>
+                </p:submenu>
+            </ps:menu>
+        </h:form>
+    </div>
+
+</ui:composition>

@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{itemMasterManagedBean.init()}"  icon="ui-icon-search"  update=":formList"/>
+                    <p:commandButton id="btnPush" value="发布" actionListener="#{itemMasterManagedBean.push()}"  icon="ui-icon-open"  update=":formList"/>  
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnEdit" icon="ui-icon-pencil" value="编辑" rendered="#{itemMasterManagedBean.currentEntity.status!='V'}" 
+                                     action="#{itemMasterManagedBean.edit('itemEdit')}"/>                                                     
+                    <p:commandButton id="btnDelete" actionListener="#{itemMasterManagedBean.delete()}" icon="ui-icon-trash" value="删除" 
+                                     rendered="#{itemMasterManagedBean.currentEntity.status!='V' }" update=":formList"/> 
+                    <p:commandButton id="btnVerify" actionListener="#{itemMasterManagedBean.verify()}" icon="ui-icon-locked" value="审核" 
+                                     rendered="#{itemMasterManagedBean.currentEntity.status!='V'}"   update=":formList"/>
+                    <p:commandButton id="btnUnverify" actionListener="#{itemMasterManagedBean.unverify()}" icon="ui-icon-unlocked" value="取消" 
+                                     rendered="#{itemMasterManagedBean.currentEntity.status=='V'}"  update=":formList"/>                   
+                    <p:commandButton id="btnCreate" icon="ui-icon-plus" value="新增"
+                                     action="#{itemMasterManagedBean.create('itemNew')}" /> 
+                </f:facet>
+            </p:toolbar>               
+            <p:dataTable value="#{itemMasterManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"  
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="15,30,45"  lazy="true" 
+                         selectionMode="single" selection="#{itemMasterManagedBean.currentEntity}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    资料维护
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="分类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemCategory.name}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="板材"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemType.name}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="材质"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemProperty.name}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="风格"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemKind.name}"/>
+                </p:column>
+                <p:column styleClass="Wid30 Responsive">
+                    <f:facet name="header">
+                        <h:outputText value="商品"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemdesc}"/>
+                </p:column>      
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="单位"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unit}"/>
+                </p:column>                
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="排序"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idx}"/>
+                </p:column>  
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="热度"/>
+                    </f:facet>
+                    <h:outputText value="#{item.hot}"/>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status}"/>
+                </p:column>
+                <f:facet name="footer">
+                    <p:outputLabel>小Logo宽72px高72px,大Logo宽270px高180px</p:outputLabel>
+                </f:facet>
+            </p:dataTable>          
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
