@@ -12,6 +12,8 @@ import com.tcjj.web.SuperOperateBean;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonStructure;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ItemTypeManagedBean extends SuperOperateBean<ItemType> {
 
     @EJB
     private ItemTypeBean itemTypeBean;
-    
+
     /**
      * Creates a new instance of ItemTypeManagedBean
      */
@@ -32,11 +34,19 @@ public class ItemTypeManagedBean extends SuperOperateBean<ItemType> {
     }
 
     @Override
+    protected void buildJsonArray() {
+        JsonArrayBuilder jab;
+        setEntityList(itemTypeBean.findAll());
+        if (entityList != null && !entityList.isEmpty()) {
+            jab = itemTypeBean.createJsonArrayBuilder(entityList);
+            buildJsonFile(jab.build(), getAppDataPath(), "type.json");
+        }
+    }
+
+    @Override
     public void init() {
         setSuperEJB(itemTypeBean);
-        setModel(new ItemTypeModel(itemTypeBean,this.userManagedBean));
+        setModel(new ItemTypeModel(itemTypeBean, this.userManagedBean));
     }
-    
-    
-    
+
 }

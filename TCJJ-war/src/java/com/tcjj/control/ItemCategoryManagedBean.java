@@ -48,9 +48,4 @@ public class ItemCategoryManagedBean extends SuperOperateBean<ItemCategory> {
         setModel(new ItemCategoryModel(itemCategoryBean, this.userManagedBean));
     }
 
-    @Override
-    public void push() {
-        super.push(); //To change body of generated methods, choose Tools | Templates.       
-    }
-
 }

@@ -65,6 +65,9 @@ public class ItemMasterManagedBean extends SuperOperateBean<ItemMaster> {
         if (itemKindList == null || itemKindList.isEmpty()) {
             itemKindList = itemKindBean.findAll();
         }
+        if (itemTypeList == null || itemTypeList.isEmpty()) {
+            itemTypeList = itemTypeBean.findAll();
+        }
         for (ItemCategory category : itemCategoryList) {
             setEntityList(null);
             setEntityList(itemMasterBean.findByCategoryId(category.getId()));
@@ -80,6 +83,15 @@ public class ItemMasterManagedBean extends SuperOperateBean<ItemMaster> {
             if (!entityList.isEmpty()) {
                 jab = itemMasterBean.createJsonArrayBuilder(entityList);
                 name = kind.getClassname() + ".json";
+                buildJsonFile(jab.build(), getAppDataPath(), name);
+            }
+        }
+        for (ItemType type : itemTypeList) {
+            setEntityList(null);
+            setEntityList(itemMasterBean.findByTypeId(type.getId()));
+            if (!entityList.isEmpty()) {
+                jab = itemMasterBean.createJsonArrayBuilder(entityList);
+                name = type.getClassname() + ".json";
                 buildJsonFile(jab.build(), getAppDataPath(), name);
             }
         }

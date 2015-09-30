@@ -9,6 +9,8 @@ import com.tcjj.comm.SuperEJB;
 import com.tcjj.entity.ItemType;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 
 /**
  *
@@ -21,5 +23,19 @@ public class ItemTypeBean extends SuperEJB<ItemType> {
     public ItemTypeBean(){
         super(ItemType.class);
     }
-
+    
+    @Override
+    public JsonObjectBuilder createJsonObjectBuilder(ItemType entity) {
+        JsonObjectBuilder job = Json.createObjectBuilder();
+        if (entity != null) {
+            job.add("id", entity.getId())
+                    .add("name", entity.getName());
+            if (entity.getClassname() != null) {
+                job.add("classname", entity.getClassname());
+            } else {
+                job.addNull("classname");
+            }
+        }
+        return job;
+    }
 }
