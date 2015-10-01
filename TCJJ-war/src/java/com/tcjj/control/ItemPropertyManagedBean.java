@@ -51,11 +51,16 @@ public class ItemPropertyManagedBean extends SuperOperateBean<ItemProperty> {
     }
 
     @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void init() {
         setSuperEJB(itemPropertyBean);
-        setModel(new ItemTypeModel(itemPropertyBean, this.userManagedBean));
+        setModel(new ItemTypeModel(itemPropertyBean));
         setItemTypeList(itemTypeBean.findAll());
-    }  
+    }
 
     /**
      * @return the itemTypeList

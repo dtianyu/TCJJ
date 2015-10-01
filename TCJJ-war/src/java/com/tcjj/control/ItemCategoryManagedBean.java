@@ -43,9 +43,15 @@ public class ItemCategoryManagedBean extends SuperOperateBean<ItemCategory> {
     }
 
     @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void init() {
         setSuperEJB(itemCategoryBean);
-        setModel(new ItemCategoryModel(itemCategoryBean, this.userManagedBean));
+        setModel(new ItemCategoryModel(itemCategoryBean));
+        super.init();
     }
 
 }

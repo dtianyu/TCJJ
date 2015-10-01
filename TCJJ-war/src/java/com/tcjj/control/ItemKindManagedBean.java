@@ -9,7 +9,6 @@ import com.tcjj.ejb.ItemKindBean;
 import com.tcjj.entity.ItemKind;
 import com.tcjj.lazy.ItemKindModel;
 import com.tcjj.web.SuperOperateBean;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -44,9 +43,14 @@ public class ItemKindManagedBean extends SuperOperateBean<ItemKind> {
     }
 
     @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void init() {
         setSuperEJB(itemKindBean);
-        setModel(new ItemKindModel(itemKindBean, this.userManagedBean));
+        setModel(new ItemKindModel(itemKindBean));
     }
 
 }

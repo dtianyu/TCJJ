@@ -112,6 +112,11 @@ public class ItemMasterManagedBean extends SuperOperateBean<ItemMaster> {
     }
 
     @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void create() {
         super.create();
         this.newEntity.setPrice(BigDecimal.ZERO);
@@ -123,7 +128,7 @@ public class ItemMasterManagedBean extends SuperOperateBean<ItemMaster> {
     @Override
     public void init() {
         setSuperEJB(itemMasterBean);
-        setModel(new ItemMasterModel(itemMasterBean, this.userManagedBean));
+        setModel(new ItemMasterModel(itemMasterBean));
         setItemCategoryList(itemCategoryBean.findAll());
         setItemTypeList(itemTypeBean.findAll());
         setItemPropertyList(itemPropertyBean.findAll());

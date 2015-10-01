@@ -5,12 +5,14 @@
  */
 package com.tcjj.ejb;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.ItemKind;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -19,7 +21,10 @@ import javax.json.JsonObjectBuilder;
 @Stateless
 @LocalBean
 public class ItemKindBean extends SuperEJB<ItemKind> {
-
+   
+    @PersistenceContext(unitName = "TCJJ-ejbPU")
+    protected EntityManager em;
+    
     public ItemKindBean() {
         super(ItemKind.class);
     }
@@ -43,6 +48,11 @@ public class ItemKindBean extends SuperEJB<ItemKind> {
             }
         }
         return job;
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+       return em;
     }
 
 }

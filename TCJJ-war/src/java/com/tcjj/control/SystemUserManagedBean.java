@@ -5,11 +5,11 @@
  */
 package com.tcjj.control;
 
-import com.tcjj.comm.Lib;
+import com.lightshell.comm.BaseLib;
+import com.lightshell.comm.GraphicCode;
 import com.tcjj.ejb.SystemUserBean;
 import com.tcjj.entity.SystemUser;
 import com.tcjj.lazy.SystemUserModel;
-import com.tcjj.web.GraphicCode;
 import com.tcjj.web.SuperOperateBean;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -75,23 +75,23 @@ public class SystemUserManagedBean extends SuperOperateBean<SystemUser> {
             newEntity.setUserid(mobile);
             newEntity.setUsername(username);
             newEntity.setEmail(mail);
-            newEntity.setPassword(Lib.securityMD5(pwd));
+            newEntity.setPassword(BaseLib.securityMD5(pwd));
             newEntity.setSuperuser(Boolean.FALSE);
             newEntity.setOwnstore(Boolean.FALSE);
             newEntity.setLocked(Boolean.FALSE);
             return true;
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(SystemUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
-
+        return false;
+        
     }
 
     @Override
     public void init() {
         setSuperEJB(systemUserBean);
-        setModel(new SystemUserModel(systemUserBean, userManagedBean));
-        try {
+        setModel(new SystemUserModel(systemUserBean));
+         try {
             graphicCode = new GraphicCode();
             graphicCode.build();
             graphicContent = graphicCode.getContent();
@@ -118,26 +118,6 @@ public class SystemUserManagedBean extends SuperOperateBean<SystemUser> {
             graphicContent = graphicCode.getContent();
         } catch (IOException ex) {
             Logger.getLogger(SystemUserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void sendVerifyCode() {
-        if (graphicString == null ? graphicCode.getCode() != null : !graphicString.equals(graphicCode.getCode())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "图形验证码错误"));
-            return;
-        }
-        if (getCount() > 3) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "已申请多次，稍后再试"));
-            return;
-        }
-        if ((!mobile.isEmpty()) && (mobile.length() == 11)) {
-            Integer code = (int) (Math.random() * 10000);
-            verifyCode = code.toString();
-            Lib.sendShortMessageVerifyCode(mobile, verifyCode);
-            setCount(getCount() + 1);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", verifyCode + "验证码已发送"));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "请输入手机号码"));
         }
     }
 
@@ -224,7 +204,7 @@ public class SystemUserManagedBean extends SuperOperateBean<SystemUser> {
     public void setCount(int count) {
         this.count = count;
     }
-    
+
     /**
      * @return the graphicContent
      */
@@ -239,11 +219,14 @@ public class SystemUserManagedBean extends SuperOperateBean<SystemUser> {
         return graphicString;
     }
 
-    /**
-     * @param graphicString the graphicString to set
-     */
-    public void setGraphicString(String graphicString) {
-        this.graphicString = graphicString;
+    @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void buildJsonArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

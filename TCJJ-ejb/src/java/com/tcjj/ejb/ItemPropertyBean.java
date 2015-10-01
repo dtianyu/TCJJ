@@ -5,13 +5,15 @@
  */
 package com.tcjj.ejb;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.ItemProperty;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -21,6 +23,9 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class ItemPropertyBean extends SuperEJB<ItemProperty> {
+
+    @PersistenceContext(unitName = "TCJJ-ejbPU")
+    protected EntityManager em;
 
     public ItemPropertyBean() {
         super(ItemProperty.class);
@@ -52,6 +57,11 @@ public class ItemPropertyBean extends SuperEJB<ItemProperty> {
         query = em.createNamedQuery("ItemProperty.findByTypeId");
         query.setParameter("typeid", id);
         return query.getResultList();
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
     }
 
 }

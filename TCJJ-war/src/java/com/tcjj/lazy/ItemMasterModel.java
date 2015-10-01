@@ -5,7 +5,8 @@
  */
 package com.tcjj.lazy;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.BaseLazyModel;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.control.UserManagedBean;
 import com.tcjj.entity.ItemMaster;
 
@@ -13,11 +14,10 @@ import com.tcjj.entity.ItemMaster;
  *
  * @author kevindong
  */
-public class ItemMasterModel extends BaseModel<ItemMaster>{
+public class ItemMasterModel extends BaseLazyModel<ItemMaster>{
     
-    public ItemMasterModel(SuperEJB superEJB,UserManagedBean userManagedBean){
+    public ItemMasterModel(SuperEJB superEJB){
         this.superEJB = superEJB;
-        this.userManagedBean = userManagedBean;
     }
     
     

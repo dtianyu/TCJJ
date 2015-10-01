@@ -13,7 +13,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonStructure;
 
 /**
  *
@@ -44,9 +43,14 @@ public class ItemTypeManagedBean extends SuperOperateBean<ItemType> {
     }
 
     @Override
+    protected void buildJsonObject() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void init() {
         setSuperEJB(itemTypeBean);
-        setModel(new ItemTypeModel(itemTypeBean, this.userManagedBean));
+        setModel(new ItemTypeModel(itemTypeBean));
     }
 
 }

@@ -5,13 +5,15 @@
  */
 package com.tcjj.ejb;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.ItemMaster;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -21,7 +23,10 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class ItemMasterBean extends SuperEJB<ItemMaster> {
-
+   
+    @PersistenceContext(unitName = "TCJJ-ejbPU")
+    protected EntityManager em;
+    
     public ItemMasterBean() {
         super(ItemMaster.class);
     }
@@ -158,6 +163,11 @@ public class ItemMasterBean extends SuperEJB<ItemMaster> {
     public List<ItemMaster> findNewest(int pagesize) {
         Query query = em.createNamedQuery("ItemMaster.findNewest").setFirstResult(0).setMaxResults(pagesize);;
         return query.getResultList();
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
     }
 
 }

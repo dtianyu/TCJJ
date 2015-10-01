@@ -5,10 +5,12 @@
  */
 package com.tcjj.ejb;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.SystemUser;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -18,6 +20,9 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class SystemUserBean extends SuperEJB<SystemUser> {
+
+    @PersistenceContext(unitName = "TCJJ-ejbPU")
+    protected EntityManager em;
 
     public SystemUserBean() {
         super(SystemUser.class);
@@ -53,6 +58,11 @@ public class SystemUserBean extends SuperEJB<SystemUser> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
     }
 
 }

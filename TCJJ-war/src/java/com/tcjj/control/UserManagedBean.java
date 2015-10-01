@@ -4,13 +4,11 @@
  */
 package com.tcjj.control;
 
-import com.tcjj.comm.Lib;
+import com.lightshell.comm.BaseLib;
 import com.tcjj.ejb.SystemUserBean;
 import com.tcjj.entity.SystemUser;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -51,9 +49,10 @@ public class UserManagedBean implements Serializable {
     public String login() {
         if (getUserid().length() == 0 || getPwd().length() == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "请输入用户名和密码"));
+            return "";
         }
         try {
-            secpwd = Lib.securityMD5(getPwd());
+            secpwd = BaseLib.securityMD5(getPwd());
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(UserManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,7 +90,7 @@ public class UserManagedBean implements Serializable {
 
     public void update() {
         if (currentUser != null) {
-            if (mobile!=null && !mobile.equals("") && !mobile.equals(currentUser.getUserid())) {
+            if (mobile != null && !mobile.equals("") && !mobile.equals(currentUser.getUserid())) {
                 currentUser.setUserid(mobile);
             }
             if (email != null && !email.equals("") && !email.equals(currentUser.getEmail())) {
@@ -102,23 +101,23 @@ public class UserManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新成功"));
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "更新失败！"));
-            }           
+            }
         }
     }
 
     public void updateLoginTime() {
         if (currentUser != null) {
-            currentUser.setLastlogin(getDate());
+            currentUser.setLastlogin(BaseLib.getDate());
             update();
         }
     }
 
     public void updatePwd() {
         try {
-            secpwd = Lib.securityMD5(getPwd());
+            secpwd = BaseLib.securityMD5(getPwd());
             SystemUser u = systemUserBean.findByUserIdAndPwd(getUserid(), getSecpwd());
             if (u != null) {
-                secpwd = Lib.securityMD5(newpwd);
+                secpwd = BaseLib.securityMD5(newpwd);
                 currentUser.setPassword(secpwd);
                 update();
                 pwd = "";
@@ -130,10 +129,6 @@ public class UserManagedBean implements Serializable {
         } catch (UnsupportedEncodingException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal", e.getMessage()));
         }
-    }
-
-    public Date getDate() {
-        return Calendar.getInstance().getTime();
     }
 
     /**

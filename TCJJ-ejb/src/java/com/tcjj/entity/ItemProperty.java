@@ -5,6 +5,7 @@
  */
 package com.tcjj.entity;
 
+import com.lightshell.comm.BaseEntityWithOperate;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemProperty.findByName", query = "SELECT i FROM ItemProperty i WHERE i.name = :name"),  
     @NamedQuery(name = "ItemProperty.findByTypeId", query = "SELECT i FROM ItemProperty i WHERE i.typeid = :typeid"),
     @NamedQuery(name = "ItemProperty.findByStatus", query = "SELECT i FROM ItemProperty i WHERE i.status = :status")})
-public class ItemProperty extends BaseOperateEntity {
+public class ItemProperty extends BaseEntityWithOperate {
     
     @Basic(optional = false)
     @NotNull

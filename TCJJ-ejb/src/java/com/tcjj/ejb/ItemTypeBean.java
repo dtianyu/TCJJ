@@ -5,12 +5,14 @@
  */
 package com.tcjj.ejb;
 
-import com.tcjj.comm.SuperEJB;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.ItemType;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -20,10 +22,13 @@ import javax.json.JsonObjectBuilder;
 @LocalBean
 public class ItemTypeBean extends SuperEJB<ItemType> {
 
-    public ItemTypeBean(){
+    @PersistenceContext(unitName = "TCJJ-ejbPU")
+    protected EntityManager em;
+
+    public ItemTypeBean() {
         super(ItemType.class);
     }
-    
+
     @Override
     public JsonObjectBuilder createJsonObjectBuilder(ItemType entity) {
         JsonObjectBuilder job = Json.createObjectBuilder();
@@ -37,5 +42,10 @@ public class ItemTypeBean extends SuperEJB<ItemType> {
             }
         }
         return job;
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return em;
     }
 }

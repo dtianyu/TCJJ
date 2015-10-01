@@ -5,28 +5,45 @@
  */
 package com.tcjj.web;
 
-import com.tcjj.entity.BaseOperateEntity;
+import com.lightshell.comm.SuperManagedBean;
+import com.lightshell.comm.BaseEntityWithOperate;
+import com.tcjj.control.UserManagedBean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 /**
  *
  * @author KevinDong
  * @param <T>
  */
-public abstract class SuperOperateBean<T extends BaseOperateEntity> extends SuperManagedBean<T> {
+public abstract class SuperOperateBean<T extends BaseEntityWithOperate> extends SuperManagedBean<T> {
+
+    private String appDataPath;
+    private String appImgPath;
+    private int favoriteCount;
+    private int newestCount;
+
+    @ManagedProperty(value = "#{userManagedBean}")
+    private UserManagedBean userManagedBean;
 
     /**
-     * Creates a new instance of SuperOperateBean
-     *
      * @param entityClass
      */
     public SuperOperateBean(Class<T> entityClass) {
         this.entityClass = entityClass;
+    }
+
+    @Override
+    public void construct() {
+        super.construct();
+        appDataPath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.tcjj.web.appdatapath");
+        appImgPath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.tcjj.web.appimgpath");
+        favoriteCount = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.tcjj.web.favorite"));
+        newestCount = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.tcjj.web.newest"));
     }
 
     @Override
@@ -37,7 +54,7 @@ public abstract class SuperOperateBean<T extends BaseOperateEntity> extends Supe
                 entity = entityClass.newInstance();
                 entity.setStatus("N");
                 entity.setCreator(getUserManagedBean().getCurrentUser().getUserid());
-                entity.setCredate(getUserManagedBean().getDate());
+                entity.setCredateToNow();
                 setNewEntity(entity);
             } catch (InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(SuperOperateBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,36 +71,31 @@ public abstract class SuperOperateBean<T extends BaseOperateEntity> extends Supe
         }
     }
 
-    public String edit(T entity, String path) {
-        edit(entity);
-        return edit(path);
-    }
-
     public String persist(String path) {
         try {
             persist();
             return path;
         } catch (Exception e) {
             return "";
-        }      
+        }
     }
-    
-    public String save(String path) {
+
+    public String update(String path) {
         try {
-            save();
+            update();
             return path;
         } catch (Exception e) {
             return "";
-        }      
+        }
     }
-    
+
     public void verify() {
         if (null != getCurrentEntity()) {
             try {
                 currentEntity.setStatus("V");
                 currentEntity.setCfmuser(getUserManagedBean().getCurrentUser().getUserid());
-                currentEntity.setCfmdate(getUserManagedBean().getDate());
-                save();
+                currentEntity.setCfmdateToNow();
+                update();
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, e.getMessage()));
             }
@@ -95,10 +107,10 @@ public abstract class SuperOperateBean<T extends BaseOperateEntity> extends Supe
             try {
                 currentEntity.setStatus("M");
                 currentEntity.setOptuser(getUserManagedBean().getCurrentUser().getUserid());
-                currentEntity.setOptdate(getUserManagedBean().getDate());
+                currentEntity.setOptdateToNow();
                 currentEntity.setCfmuser(null);
                 currentEntity.setCfmdate(null);
-                save();
+                update();
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, e.getMessage()));
             }
@@ -114,17 +126,47 @@ public abstract class SuperOperateBean<T extends BaseOperateEntity> extends Supe
         }
     }
 
-    public String view(T entity, String path) {
-        view(entity);
-        return view(path);
+    /**
+     * @return the userManagedBean
+     */
+    public UserManagedBean getUserManagedBean() {
+        return userManagedBean;
     }
 
-    public void onRowSelect(SelectEvent event) {
-        setCurrentEntity((T) event.getObject());
+    /**
+     * @param userManagedBean the userManagedBean to set
+     */
+    public void setUserManagedBean(UserManagedBean userManagedBean) {
+        this.userManagedBean = userManagedBean;
     }
 
-    public void onRowUnselect(UnselectEvent event) {
-        setCurrentEntity(null);
+    @Override
+    public String getAppDataPath() {
+        return this.appDataPath;
+    }
+
+    @Override
+    public String getAppImgPath() {
+        return this.appImgPath;
+    }
+
+    /**
+     * @return the favoriteCount
+     */
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    /**
+     * @return the newestCount
+     */
+    public int getNewestCount() {
+        return newestCount;
+    }
+
+    @Override
+    public void push() {
+        buildJsonArray();
     }
 
 }

@@ -5,19 +5,18 @@
  */
 package com.tcjj.lazy;
 
-import com.tcjj.comm.SuperEJB;
-import com.tcjj.control.UserManagedBean;
+import com.lightshell.comm.BaseLazyModel;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.ItemType;
 
 /**
  *
  * @author kevindong
  */
-public class ItemTypeModel extends BaseModel<ItemType> {
+public class ItemTypeModel extends BaseLazyModel<ItemType> {
 
-    public ItemTypeModel(SuperEJB sessionBean, UserManagedBean userManagedBean) {
+    public ItemTypeModel(SuperEJB sessionBean) {
         this.superEJB = sessionBean;
-        this.userManagedBean = userManagedBean;
     }
 
 }

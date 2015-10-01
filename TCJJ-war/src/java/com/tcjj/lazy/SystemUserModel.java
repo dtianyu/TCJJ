@@ -5,19 +5,18 @@
  */
 package com.tcjj.lazy;
 
-import com.tcjj.comm.SuperEJB;
-import com.tcjj.control.UserManagedBean;
+import com.lightshell.comm.BaseLazyModel;
+import com.lightshell.comm.SuperEJB;
 import com.tcjj.entity.SystemUser;
 
 /**
  *
  * @author C0160
  */
-public class SystemUserModel extends BaseModel<SystemUser> {
+public class SystemUserModel extends BaseLazyModel<SystemUser> {
     
-    public SystemUserModel(SuperEJB sessionBean, UserManagedBean userManagedBean) {
+    public SystemUserModel(SuperEJB sessionBean) {
         this.superEJB = sessionBean;
-        this.userManagedBean = userManagedBean;
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package com.tcjj.entity;
 
+import com.lightshell.comm.BaseEntityWithOperate;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ItemMaster.findByStatus", query = "SELECT i FROM ItemMaster i WHERE i.status = :status"),
     @NamedQuery(name = "ItemMaster.findFavorite", query = "SELECT i FROM ItemMaster i ORDER BY i.idx DESC "),
     @NamedQuery(name = "ItemMaster.findNewest", query = "SELECT i FROM ItemMaster i ORDER BY i.hot DESC")})
-public class ItemMaster extends BaseOperateEntity {
+public class ItemMaster extends BaseEntityWithOperate {
 
     @JoinColumn(name = "categoryid", referencedColumnName = "id")
     @ManyToOne(optional = false)
